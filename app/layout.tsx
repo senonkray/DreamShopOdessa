@@ -1,5 +1,7 @@
 import { Nunito } from 'next/font/google';
 
+import { StackProvider, StackTheme } from "@stackframe/stack";
+import { stackServerApp } from "../stack";
 import './globals.css';
 import { Providers } from '@/shared/components/shared/providers';
 
@@ -19,9 +21,9 @@ export default function RootLayout({
       <head>
         <link data-rh="true" rel="icon" href="/logo.png" />
       </head>
-      <body className={nunito.className}>
+      <body className={nunito.className}><StackProvider app={stackServerApp}><StackTheme>
         <Providers>{children}</Providers>
-      </body>
+      </StackTheme></StackProvider></body>
     </html>
   );
 }

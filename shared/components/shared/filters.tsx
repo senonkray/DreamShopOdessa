@@ -27,51 +27,57 @@ export const Filters: React.FC<Props> = ({ className }) => {
 
   return (
     <div className={className}>
-      <Title text="Фильтрация" size="sm" className="mb-5 font-bold" />
+      <Title text="Відсіяти Зайве" size="sm" className="mb-5 font-bold" />
 
       {/* Верхние чекбоксы */}
       <CheckboxFiltersGroup
-        title="Тип теста"
+        title="Типи товару"
         name="pizzaTypes"
         className="mb-5"
         onClickCheckbox={filters.setPizzaTypes}
         selected={filters.pizzaTypes}
         items={[
-          { text: 'Тонкое', value: '1' },
-          { text: 'Традиционное', value: '2' },
+          { text: 'Тропічні', value: '1' },
+          { text: 'Бабусі з гярдки', value: '2' },
+          { text: 'Це не зйсти', value: '3' },
+          { text: 'Рідке', value: '4' },
         ]}
       />
 
       <CheckboxFiltersGroup
-        title="Размеры"
+        title="Фасування"
         name="sizes"
         className="mb-5"
         onClickCheckbox={filters.setSizes}
         selected={filters.sizes}
         items={[
-          { text: '20 см', value: '20' },
-          { text: '30 см', value: '30' },
-          { text: '40 см', value: '40' },
+          { text: '30 г', value: '30' },
+          { text: '50 г', value: '50' },
+          { text: '100 г', value: '100' },
+          { text: '500 г', value: '500' },
+          { text: '1кг', value: '1' },
+          { text: '50 шт', value: '050' },
+          { text: '100 шт', value: '0100' },
         ]}
       />
 
       {/* Фильтр цен */}
       <div className="mt-5 border-y border-y-neutral-100 py-6 pb-7">
-        <p className="font-bold mb-3">Цена от и до:</p>
+        <p className="font-bold mb-3">Ціна от і до:</p>
         <div className="flex gap-3 mb-5">
           <Input
             type="number"
             placeholder="0"
             min={0}
-            max={1000}
+            max={1500}
             value={String(filters.prices.priceFrom)}
             onChange={(e) => filters.setPrices('priceFrom', Number(e.target.value))}
           />
           <Input
             type="number"
             min={100}
-            max={1000}
-            placeholder="1000"
+            max={1500}
+            placeholder="1500"
             value={String(filters.prices.priceTo)}
             onChange={(e) => filters.setPrices('priceTo', Number(e.target.value))}
           />
@@ -79,15 +85,15 @@ export const Filters: React.FC<Props> = ({ className }) => {
 
         <RangeSlider
           min={0}
-          max={1000}
+          max={1500}
           step={10}
-          value={[filters.prices.priceFrom || 0, filters.prices.priceTo || 1000]}
+          value={[filters.prices.priceFrom || 0, filters.prices.priceTo || 1500]}
           onValueChange={updatePrices}
         />
       </div>
 
       <CheckboxFiltersGroup
-        title="Ингредиенты"
+        title=" "
         name="ingredients"
         className="mt-5"
         limit={6}

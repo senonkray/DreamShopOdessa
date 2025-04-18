@@ -83,7 +83,7 @@ export async function createOrder(data: CheckoutFormValues) {
     const paymentData = await createPayment({
       amount: order.totalAmount,
       orderId: order.id,
-      description: 'Оплата заказа #' + order.id,
+      description: 'Ну що ж, діставай свої мільйони #' + order.id,
     });
 
     if (!paymentData) {
@@ -103,7 +103,7 @@ export async function createOrder(data: CheckoutFormValues) {
 
     await sendEmail(
       data.email,
-      'Next Pizza / Оплатите заказ #' + order.id,
+      'Dream Shop / Ну що ж, діставай свої мільйони #' + order.id,
       PayOrderTemplate({
         orderId: order.id,
         totalAmount: order.totalAmount,
@@ -122,7 +122,7 @@ export async function updateUserInfo(body: Prisma.UserUpdateInput) {
     const currentUser = await getUserSession();
 
     if (!currentUser) {
-      throw new Error('Пользователь не найден');
+      throw new Error('Ми ще не знайомі з тобою');
     }
 
     const findUser = await prisma.user.findFirst({
@@ -157,10 +157,10 @@ export async function registerUser(body: Prisma.UserCreateInput) {
 
     if (user) {
       if (!user.verified) {
-        throw new Error('Почта не подтверждена');
+        throw new Error('Там, на пошті, треба натиснути на повідомлення.');
       }
 
-      throw new Error('Пользователь уже существует');
+      throw new Error('Ти що, забув, як під шафе реєструвався');
     }
 
     const createdUser = await prisma.user.create({
@@ -182,7 +182,7 @@ export async function registerUser(body: Prisma.UserCreateInput) {
 
     await sendEmail(
       createdUser.email,
-      'Next Pizza / 📝 Подтверждение регистрации',
+      'Dream Shop / 📝 Що ти там читаєш? Підписуй скоріше — реєстрація майже завершена!',
       VerificationUserTemplate({
         code,
       }),

@@ -8,10 +8,10 @@ interface Props {
 
 export const CheckoutPersonalForm: React.FC<Props> = ({ className }) => {
   return (
-    <WhiteBlock title="2. Персональные данные" className={className}>
+    <WhiteBlock title="2. роскажи трохи про себе" className={className}>
       <div className="grid grid-cols-2 gap-5">
-        <FormInput name="firstName" className="text-base" placeholder="Имя" />
-        <FormInput name="lastName" className="text-base" placeholder="Фамилия" />
+        <FormInput name="firstName" className="text-base" placeholder="Ім'я" />
+        <FormInput name="lastName" className="text-base" placeholder="Призвеще" />
         <FormInput name="email" className="text-base" placeholder="E-Mail" />
         <FormInput name="phone" className="text-base" placeholder="Телефон" />
       </div>

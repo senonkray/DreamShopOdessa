@@ -10,7 +10,7 @@ export async function GET(req: any, res: any) {
     const user = await getServerSession(req, res, authOptions);
 
     if (!user) {
-      return NextResponse.json({ message: 'Вы не авторизованы' }, { status: 401 });
+      return NextResponse.json({ message: 'Ой, а ми знайомі?' }, { status: 401 });
     }
 
     const data = await prisma.user.findUnique({

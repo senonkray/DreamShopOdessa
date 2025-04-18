@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     if (isSucceeded) {
       await sendEmail(
         order.email,
-        'Next Pizza / Ваш заказ успешно оформлен 🎉',
+        'Dream Shop / Вітаю! Тепер твої страви й коктейлі будуть неймовірні! 🥳🍸🍽️',
         OrderSuccessTemplate({ orderId: order.id, items }),
       );
     } else {

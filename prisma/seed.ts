@@ -35,7 +35,7 @@ async function up() {
         role: 'USER',
       },
       {
-        fullName: 'Admin Admin',
+        fullName: 'Dream Shop',
         email: 'admin@test.ru',
         password: hashSync('111111', 10),
         verified: new Date(),
@@ -58,7 +58,7 @@ async function up() {
 
   const pizza1 = await prisma.product.create({
     data: {
-      name: 'Пепперони фреш',
+      name: 'Апеельсин',
       imageUrl:
         'https://media.dodostatic.net/image/r:233x233/11EE7D61304FAF5A98A6958F2BB2D260.webp',
       categoryId: 1,
@@ -163,7 +163,7 @@ async function up() {
     data: [
       {
         previewImageUrl:
-          'https://cdn.inappstory.ru/story/xep/xzh/zmc/cr4gcw0aselwvf628pbmj3j/custom_cover/logo-350x440.webp?k=IgAAAAAAAAAE&v=3101815496',
+          'https://i.postimg.cc/66YmBJjn/IMG-5422.jpg',
       },
       {
         previewImageUrl:
