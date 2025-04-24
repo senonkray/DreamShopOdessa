@@ -1,47 +1,92 @@
-import { cn } from '@/shared/lib/utils';
-import React from 'react';
-import { Title } from './title';
-import { Button } from '../ui';
+'use client'
+import { useState } from 'react';
+import { cn } from '@/shared/lib/utils'
+import { Title } from './title'
+import { Button } from '../ui/button'
+import type { ProductItem } from '@prisma/client'
 
-interface Props {
+
+type LocalProductItem = {
+  id: number;
+  size: number;
+  price: number;
+};
+
+type ChooseProductFormProps = {
   imageUrl: string;
   name: string;
-  price: number;
+  description?: string | null;
+  items: ProductItem[];
   loading?: boolean;
-  onSubmit?: VoidFunction;
-  className?: string;
-}
+  onSubmit?: (itemId: number) => void;
+};
 
-/**
- * Форма выбора ПРОДУКТА
- */
-export const ChooseProductForm: React.FC<Props> = ({
-  name,
+export const ChooseProductForm = ({
   imageUrl,
-  price,
-  onSubmit,
-  className,
+  name,
+  description,
+  items,
   loading,
-}) => {
+  onSubmit,
+}: ChooseProductFormProps) => {
+  const [selected, setSelected] = useState<LocalProductItem>({
+    id: items[0].id,
+    size: items[0].size ?? 0, // Provide a default value for null
+    price: items[0].price,
+  });
+
+  const handleSelect = (item: LocalProductItem) => {
+    setSelected(item);
+  };
+
+  const handleSubmit = () => {
+    if (onSubmit) {
+      onSubmit(selected.id);
+    }
+  };
+
   return (
-    <div className={cn(className, 'flex flex-1')}>
-      <div className="flex items-center justify-center flex-1 relative w-full">
+    <div className="flex flex-row gap-6 p-4 border rounded-md">
+      {/* Левый блок: Изображение продукта */}
+      <div className="max-w-xs">
         <img
           src={imageUrl}
           alt={name}
-          className="relative left-2 top-2 transition-all z-10 duration-300 w-[350px] h-[350px]"
+          className="w-full h-auto object-cover rounded"
         />
       </div>
 
-      <div className="w-[490px] bg-[#f7f6f5] p-7">
-        <Title text={name} size="md" className="font-extrabold mb-1" />
+      {/* Правый блок: Детали продукта */}
+      <div className="flex flex-col justify-between">
+        <div>
+          <h2 className="text-2xl font-bold mb-2">{name}</h2>
+          {description && (
+            <p className="text-gray-600 mb-4">{description}</p>
+          )}
 
-        <Button
-          loading={loading}
-          onClick={() => onSubmit?.()}
-          className="h-[55px] px-10 text-base rounded-[18px] w-full mt-10">
-          Додати у кошик за {price} ₴
+          {/* Кнопки выбора фасовки */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {items.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => handleSelect({ ...item, size: item.size ?? 0 })}
+                className={`px-4 py-2 border rounded ${
+                  selected.id === item.id
+                    ? 'bg-blue-500 text-white'
+                    : 'bg-white text-black'
+                }`}
+              >
+                {item.size} г - ${item.price.toFixed(2)}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Кнопка "Добавить в корзину" */}
+        <Button onClick={() => onSubmit?.(selected.id)} loading={loading}>
+          Додати у кошик за {selected.price} ₴
         </Button>
+
       </div>
     </div>
   );

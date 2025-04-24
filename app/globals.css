@@ -11,6 +11,14 @@ html {
     scroll-behavior: auto;
   }
 }
+/* Скрывает scrollbar в Chrome, Safari и Firefox */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE и Edge */
+  scrollbar-width: none;    /* Firefox */
+}
 
 @layer base {
   :root {

@@ -1,31 +1,29 @@
 import { Container, ProductForm } from '@/shared/components/shared';
 import { prisma } from '@/prisma/prisma-client';
 import { notFound } from 'next/navigation';
+import React from 'react';
 
-export default async function ProductPage({ params: { id } }: { params: { id: string } }) {
-  const product = await prisma.product.findFirst({
-    where: { id: Number(id) },
-    include: {
-      ingredients: true,
-      category: {
-        include: {
-          products: {
-            include: {
-              items: true,
-            },
-          },
-        },
-      },
-      items: true,
-    },
+interface PageProps {
+  params: {
+    id: string;
+  };
+}
+
+export default async function Page({ params }: { params: { id: string } }) {
+  // 1) Подгружаем продукт с фасовками
+  const product = await prisma.product.findUnique({
+    where: { id: Number(params.id) },
+    include: { items: true },
   });
 
+  // 2) Если не нашли — возвращаем 404
   if (!product) {
     return notFound();
   }
 
+  // 3) Рендерим контейнер + форму, передаём весь объект product
   return (
-    <Container className="flex flex-col my-10">
+    <Container>
       <ProductForm product={product} />
     </Container>
   );

@@ -1,32 +1,61 @@
+import CategoryStories from '@/shared/components/shared/CategoryStories';
+import { prisma } from '@/prisma/prisma-client';
 import {
   Container,
   Filters,
   Title,
   TopBar,
   ProductsGroupList,
-  Stories,
 } from '@/shared/components/shared';
 import { Suspense } from 'react';
 import { GetSearchParams, findPizzas } from '@/shared/lib/find-pizzas';
 
 export default async function Home({ searchParams }: { searchParams: GetSearchParams }) {
-  const categories = await findPizzas(searchParams);
+  const categories = await prisma.category.findMany({
+    select: {
+      id: true,
+      name: true,
+      imageUrl: true,
+      products: {
+        select: {
+          id: true,
+          name: true,
+          imageUrl: true,
+          description: true,
+          categoryId: true,
+          createdAt: true,
+          updatedAt: true,
+          items: true, // Include items relation
+          ingredients: true, // Include ingredients relation
+        },
+      },
+    },
+    orderBy: { name: 'asc' },
+  });
 
   return (
     <>
       <Container className="mt-10">
-        <Title text="Усі товари" size="lg" className="font-extrabold" />
+        <h1 className="text-4xl font-extrabold mt-10">Усі товари</h1>
       </Container>
 
-      <TopBar categories={categories.filter((category) => category.products.length > 0)} />
-
-      <Stories />
-
       <Container className="mt-10 pb-14">
-        <div className="flex gap-[80px]">
+        {/* Блок CategoryStories остаётся наверху */}
+        <CategoryStories
+          categories={categories.map(({ id, name, imageUrl }) => ({
+            id,
+            name,
+            imageUrl: imageUrl || '', // Ensure imageUrl is always a string
+          }))}
+          activeId={searchParams.category}
+        />
+
+        {/* Блок с фильтрами и списком товаров */}
+        <div className="flex flex-col md:flex-row gap-[80px] mt-8">
           {/* Фильтрация */}
-          <div className="w-[250px]">
-            <Suspense>
+          {/* На мобильных (md и ниже) блок скрыт */}
+          <div className="w-[250px] hidden md:block">
+            <Suspense fallback={<div>Загрузка фильтров...</div>}>
               <Filters />
             </Suspense>
           </div>

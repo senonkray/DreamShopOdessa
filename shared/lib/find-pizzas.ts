@@ -1,6 +1,7 @@
 import { prisma } from '@/prisma/prisma-client';
 
 export interface GetSearchParams {
+  category: string | number | undefined;
   query?: string;
   sortBy?: string;
   sizes?: string;

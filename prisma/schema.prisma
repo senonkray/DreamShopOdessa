@@ -29,12 +29,12 @@ model User {
 }
 
 model Category {
-    id       Int       @id @default(autoincrement())
-    name     String    @unique
-    products Product[]
-
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id         Int       @id @default(autoincrement())
+  name       String
+  imageUrl   String?           // ← добавили
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  products   Product[]            // связь на товары
 }
 
 model Product {
@@ -43,7 +43,9 @@ model Product {
     name     String
     imageUrl String
 
-    ingredients Ingredient[]
+    ingredients Ingredient[] @relation("ProductIngredient")
+
+    description String?       
     items       ProductItem[]
 
     category   Category @relation(fields: [categoryId], references: [id])
@@ -73,7 +75,8 @@ model Ingredient {
     price    Int
     imageUrl String
 
-    products  Product[]
+    products Product[] @relation("ProductIngredient")
+
     cartItems CartItem[]
 
     createdAt DateTime @default(now())
